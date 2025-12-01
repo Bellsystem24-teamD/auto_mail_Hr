@@ -82,9 +82,9 @@ st.title("⚡ TOOL TUYỂN DỤNG BELL SYSTEM24_by_MrMến")
 # --- CỘT TRÁI: CẤU HÌNH ---
 with st.sidebar:
     st.header("1. Email & Liên hệ")
-    email_gui = st.text_input("Gmail của bạn", "trantruongvu61@gmail.com")
+    email_gui = st.text_input("Gmail của bạn", "")
     mat_khau = st.text_input("Mật khẩu ứng dụng", type="password")
-    contact_info = st.text_input("Tên & SĐT Zalo của bạn:", value="Nguyễn Lộc - 0326489852")
+    contact_info = st.text_input("Tên & SĐT Zalo của bạn:", value="Tên HR - SĐT/ZaLo")
     link_jd = st.text_input("Link JD chi tiết (nếu có):", placeholder="Dán link vào đây...")
     
     st.divider()
