@@ -7,7 +7,7 @@ from email.mime.image import MIMEImage
 import time
 
 # --- CẤU HÌNH TRANG WEB ---
-st.set_page_config(page_title="Tool Tuyển Dụng Bell24 Pro", page_icon="⚡", layout="wide")
+st.set_page_config(page_title="Tool Tuyển Dụng Bell24 by_MrMến", page_icon="⚡", layout="wide")
 
 # --- DỮ LIỆU JOB (KÈM MÀU THƯƠNG HIỆU & BG) ---
 JOB_DATABASE = {
@@ -77,7 +77,7 @@ JOB_DATABASE = {
     }
 }
 
-st.title("⚡ TOOL TUYỂN DỤNG BELL SYSTEM24")
+st.title("⚡ TOOL TUYỂN DỤNG BELL SYSTEM24_by_MrMến")
 
 # --- CỘT TRÁI: CẤU HÌNH ---
 with st.sidebar:
