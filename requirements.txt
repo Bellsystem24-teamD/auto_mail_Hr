@@ -1,3 +1,5 @@
 streamlit
 pandas
 openpyxl
+# Thêm dòng này để tránh lỗi pyarrow kén chọn
+pyarrow-hotfix

@@ -30,7 +30,7 @@ JOB_DATABASE = {
     "TPBank - CSKH Full-time": {
         "title": "Nhân viên CSKH TPBank (Inbound)",
         "salary": "7.000.000đ – 9.000.000đ + Thưởng nóng",
-        "location": "44 Lê Ngọc Hân / 155 Đội Cấn / Ngoại Giao Đoàn",
+        "location": "44 Lê Ngọc Hân / 155 Đội Cấn / Khu Ngoại giao đoàn, Xuân Tảo, Bắc Từ Liêm, Hà Nội",
         "time": "Xoay ca (07h00 – 22h00), 6 ngày/tuần",
         "benefit": "Hỗ trợ tài chính đào tạo, Du lịch hàng năm",
         "color": "#762483", "bg_color": "#f3e5f5" # Tím TPBank
@@ -38,7 +38,7 @@ JOB_DATABASE = {
     "TPBank - CSKH Part-time": {
         "title": "Nhân viên Hỗ trợ TPBank (Part-time)",
         "salary": "3.000.000₫ – 5.000.000đ (Việc làm thêm)",
-        "location": "Lựa chọn: 44 Lê Ngọc Hân / 155 Đội Cấn",
+        "location": "Lựa chọn: 44 Lê Ngọc Hân / 155 Đội Cấn / Khu Ngoại giao đoàn, Xuân Tảo, Bắc Từ Liêm, Hà Nội",
         "time": "Ca tối: 17h-21h hoặc 18h-22h (Phù hợp sinh viên)",
         "benefit": "Hỗ trợ 120k/ngày đào tạo, Cơ hội lên chính thức",
         "color": "#762483", "bg_color": "#f3e5f5"
