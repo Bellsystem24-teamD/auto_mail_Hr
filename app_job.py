@@ -84,14 +84,33 @@ with st.sidebar:
     st.header("1. Email & Liên hệ")
     email_gui = st.text_input("Gmail của bạn", "")
     mat_khau = st.text_input("Mật khẩu ứng dụng", type="password")
-    contact_info = st.text_input("Tên & SĐT Zalo của bạn:", value="Tên HR - SĐT/ZaLo")
-    link_jd = st.text_input("Link JD chi tiết (nếu có):", placeholder="Dán link vào đây...")
+    contact_info = st.text_input("Tên & SĐT Zalo của bạn:", value="Mr Mến - 09xx.xxx.xxx")
     
     st.divider()
-    st.header("2. Chọn Job & Nhập liệu")
+    st.header("2. Chọn Job & Loại Mail")
     selected_job_name = st.selectbox("📌 Vị trí tuyển dụng:", list(JOB_DATABASE.keys()))
     job_info = JOB_DATABASE[selected_job_name] 
+
+    # --- TÍNH NĂNG MỚI: CHỌN LOẠI EMAIL ---
+    email_type = st.radio("✉️ Loại Email gửi đi:", ["Mời Ứng Tuyển (Giới thiệu)", "Mời Phỏng Vấn (Hẹn lịch)"])
+
+    link_jd = ""
+    interview_time = ""
+    interview_loc = ""
+    interview_note = ""
+
+    if email_type == "Mời Ứng Tuyển (Giới thiệu)":
+        st.info("ℹ️ Dùng để gửi JD mời ứng viên apply.")
+        link_jd = st.text_input("Link JD chi tiết (nếu có):", placeholder="Dán link vào đây...")
     
+    else: # Mời Phỏng Vấn
+        st.warning("📅 Dùng để hẹn lịch phỏng vấn.")
+        interview_time = st.text_input("Thời gian phỏng vấn:", "09:00 Sáng, Thứ ... ngày ...")
+        interview_loc = st.text_input("Địa điểm phỏng vấn:", value=job_info['location'])
+        interview_note = st.text_area("Ghi chú/Hồ sơ cần mang:", "Vui lòng mang theo CV bản cứng + CCCD/CMND khi đi phỏng vấn.")
+    
+    st.divider()
+    st.header("3. Nhập liệu")
     mode = st.radio("👉 Chế độ:", ["Gửi hàng loạt (Excel)", "Gửi từng người (Nhập tay)"])
     
     df = None
@@ -109,8 +128,8 @@ with st.sidebar:
     st.divider()
     uploaded_banner = st.file_uploader("🖼️ Ảnh Banner (hiện đầu thư)", type=['png', 'jpg', 'jpeg'])
 
-# --- HÀM TẠO HTML EMAIL ---
-def create_email_html(name_candidate, job_data, contact, link_jd):
+# --- HÀM TẠO HTML EMAIL 1: MỜI ỨNG TUYỂN ---
+def create_job_offer_html(name_candidate, job_data, contact, link_jd):
     main_color = job_data.get('color', '#0056b3')
     bg_color = job_data.get('bg_color', '#f8f9fa')
 
@@ -161,6 +180,44 @@ def create_email_html(name_candidate, job_data, contact, link_jd):
     """
     return html
 
+# --- HÀM TẠO HTML EMAIL 2: MỜI PHỎNG VẤN (MỚI) ---
+def create_interview_html(name_candidate, job_data, contact, time_pv, loc_pv, note_pv):
+    main_color = job_data.get('color', '#0056b3')
+    bg_color = job_data.get('bg_color', '#f8f9fa')
+
+    html = f"""
+    <html><body style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #333; background-color: #f9f9f9; padding: 20px;">
+        <div style="max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+            <img src="cid:banner" style="width:100%; border-radius: 8px; margin-bottom: 25px; display: block;" alt="Banner">
+            <p style="font-size: 16px;">Chào bạn <b>{name_candidate}</b>,</p>
+            <p>Mình là <b>{contact.split('-')[0].strip()}</b> từ bộ phận Tuyển dụng <b>Bell System24 Vietnam</b>.</p>
+            
+            <p>Cảm ơn bạn đã quan tâm đến vị trí <b>{job_data['title']}</b>. Sau khi xem xét hồ sơ, bên mình rất vui mừng mời bạn tham gia buổi phỏng vấn trực tiếp.</p>
+            
+            <div style="text-align: center; margin: 25px 0;">
+                <span style="background-color: {main_color}; color: white; padding: 10px 20px; border-radius: 4px; font-weight: bold; font-size: 16px; letter-spacing: 1px;">THƯ MỜI PHỎNG VẤN</span>
+            </div>
+
+            <div style="background-color: {bg_color}; border: 1px solid {main_color}30; border-left: 6px solid {main_color}; border-radius: 8px; padding: 20px; margin: 20px 0;">
+                <p style="margin-bottom: 10px;"><b>📅 THỜI GIAN:</b> <br><span style="font-size: 16px; color: #d32f2f; font-weight: bold;">{time_pv}</span></p>
+                <p style="margin-bottom: 10px;"><b>📍 ĐỊA ĐIỂM:</b> <br>{loc_pv}</p>
+                <p style="margin-bottom: 0px;"><b>📝 LƯU Ý / HỒ SƠ:</b> <br>{note_pv}</p>
+            </div>
+            
+            <p>Bạn vui lòng <b>Reply (Trả lời)</b> email này hoặc nhắn tin Zalo để xác nhận tham gia nhé!</p>
+            
+            <div style="background: #ffffff; border: 2px dashed {main_color}; padding: 15px; border-radius: 8px; text-align: center; margin: 20px 0;">
+                <p style="margin: 0; font-size: 14px; color: #555;">Liên hệ hỗ trợ/Dẫn đường:</p>
+                <p style="margin: 5px 0; font-size: 22px; font-weight: bold; color: {main_color};">📞 {contact}</p>
+            </div>
+            
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+            <p style="color: #999; font-size: 12px; text-align: center;">Trân trọng,<br>Bộ phận Tuyển dụng Bell System24 Vietnam.</p>
+        </div>
+    </body></html>
+    """
+    return html
+
 # --- CỘT PHẢI: XEM TRƯỚC & GỬI ---
 col1, col2 = st.columns([2, 1])
 
@@ -181,8 +238,14 @@ if df is not None:
             break
 
 with col1:
-    st.subheader("📝 Xem trước")
-    preview_content = create_email_html("[Tên Ứng Viên]", job_info, contact_info, link_jd)
+    st.subheader("📝 Xem trước Email")
+    
+    # Logic tạo nội dung xem trước
+    if email_type == "Mời Ứng Tuyển (Giới thiệu)":
+        preview_content = create_job_offer_html("[Tên Ứng Viên]", job_info, contact_info, link_jd)
+    else:
+        preview_content = create_interview_html("[Tên Ứng Viên]", job_info, contact_info, interview_time, interview_loc, interview_note)
+        
     st.components.v1.html(preview_content, height=800, scrolling=True)
 
 with col2:
@@ -198,8 +261,8 @@ with col2:
     else:
         st.info("👈 Đang chờ nhập liệu...")
 
-    # NÚT GỬI LUÔN HIỆN (Bấm vào mới check lỗi)
-    if st.button("🚀 GỬI EMAIL NGAY (SIÊU TỐC)", type="primary"):
+    # NÚT GỬI LUÔN HIỆN
+    if st.button(f"🚀 GỬI {len(df) if df is not None else 0} EMAIL", type="primary"):
         if not is_ready:
             st.error("❌ Chưa có dữ liệu hoặc file Excel bị lỗi cột.")
         elif not mat_khau:
@@ -225,9 +288,15 @@ with col2:
                     msg = MIMEMultipart('related')
                     msg['From'] = f"Bell24 Tuyển Dụng <{email_gui}>"
                     msg['To'] = email
-                    msg['Subject'] = f"Cơ hội việc làm: {job_info['title']}"
                     
-                    real_html = create_email_html(name, job_info, contact_info, link_jd)
+                    # --- XỬ LÝ TIÊU ĐỀ & NỘI DUNG ---
+                    if email_type == "Mời Ứng Tuyển (Giới thiệu)":
+                        msg['Subject'] = f"Cơ hội việc làm: {job_info['title']}"
+                        real_html = create_job_offer_html(name, job_info, contact_info, link_jd)
+                    else:
+                        msg['Subject'] = f"THƯ MỜI PHỎNG VẤN - {job_info['title']}"
+                        real_html = create_interview_html(name, job_info, contact_info, interview_time, interview_loc, interview_note)
+                    
                     msg_alt = MIMEMultipart('alternative')
                     msg.attach(msg_alt)
                     msg_alt.attach(MIMEText(real_html, 'html'))
@@ -242,7 +311,7 @@ with col2:
                     count += 1
                     bar.progress((i + 1) / len(df))
                     
-                    # TỐC ĐỘ CAO: Chỉ nghỉ 0.1 giây
+                    # Tốc độ gửi
                     time.sleep(0.1) 
                 
                 server.quit()
